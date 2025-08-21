@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { handleFailure } from '../utils';
+import { handleFailure, handleSuccess } from '../utils';
 
 function Signup(){
 
@@ -11,6 +11,8 @@ function Signup(){
         email:'',
         password:''
     });
+
+    const navigate = useNavigate();
 
     const handleChange=(e)=>{
         const {name, value} = e.target;
@@ -39,7 +41,14 @@ function Signup(){
                 body: JSON.stringify(signUpInfo)
             })
             const result = await response.json();
-            console.log(result);
+            const { success, message } = result;
+
+            if(success){
+                handleSuccess(message);
+                setTimeout(()=>{
+                    navigate('/login')
+                },2000)
+            }
             
         }catch(err){
             handleFailure(err);
