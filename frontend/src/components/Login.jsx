@@ -39,10 +39,12 @@ function Login(){
             })
 
             const result = await response.json();
-            const { success, message, error } = result;
+            const { success, message, jwtToken, email, error } = result;
 
             if(success){
                 handleSuccess(message);
+                localStorage.setItem('token', jwtToken);
+                localStorage.setItem('loggedInAs', email);
                 setTimeout(()=>{
                     navigate('/home')
                 },2000)
