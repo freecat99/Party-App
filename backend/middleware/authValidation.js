@@ -9,7 +9,10 @@ const signUpValidate = (req, res, next)=>{
     const {error} = schema.validate(req.body);
 
     if(error){
-        res.status(400).send(`Bad Request, ${error}`)
+        return res.status(400).json({
+            "message":'Bad Request',
+            "error":error
+        })
     }
     next();
 }
@@ -22,7 +25,10 @@ const loginValidate = (req, res, next)=>{
     const {error} = schema.validate(req.body);
 
     if(error){
-        res.status(400).send(`Bad Request, ${error}`)
+        return res.status(400).json({
+            "message: ":'Bad Request',
+            "error":error
+        })
     }
     next();
 }

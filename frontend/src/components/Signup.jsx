@@ -16,19 +16,17 @@ function Signup(){
 
     const handleChange=(e)=>{
         const {name, value} = e.target;
-        console.log(name, value);
         const copySignUpInfo = {...signUpInfo};
         copySignUpInfo[name] = value;
         setSignUpInfo(copySignUpInfo);
     }
-    console.log(signUpInfo); 
 
     const handleSignUp = async(e) => {
         e.preventDefault();
 
         const {name, email, password} = signUpInfo;
         if(!name || !email || !password){
-            return handleFailure("all fields necessary!")
+            return handleFailure("All fields necessary!")
         }
 
         try{
@@ -40,14 +38,21 @@ function Signup(){
                 },
                 body: JSON.stringify(signUpInfo)
             })
+
             const result = await response.json();
-            const { success, message } = result;
+            const { success, message, error } = result;
 
             if(success){
                 handleSuccess(message);
                 setTimeout(()=>{
                     navigate('/login')
                 },2000)
+            }
+            else if(error){
+                const details = error.details[0].message;
+                handleFailure(details);
+            }else{
+                handleFailure(message);
             }
             
         }catch(err){
