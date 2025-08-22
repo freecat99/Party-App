@@ -49,6 +49,7 @@ function Signup(){
                     navigate('/login')
                 },2000)
             }
+            handleFailure(message);
             
         }catch(err){
             handleFailure(err);
