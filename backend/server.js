@@ -17,6 +17,7 @@ const PORT = process.env.PORT || 1600;
 
 app.use(bodyParser.json());
 
+
 app.use('/auth', require('./router/authRouter'))
 app.use('/party', require('./router/partyRouter'))
 

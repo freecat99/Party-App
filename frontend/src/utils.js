@@ -10,3 +10,8 @@ export const handleFailure = (msg) => {
         position:'top-right'
     })
 }
+export const handleDefault = (msg) => {
+    toast(msg, {
+        position:'top-right'
+    })
+}
