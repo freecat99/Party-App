@@ -1,88 +1,99 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Link, useNavigate } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify';
 import { handleFailure, handleSuccess } from '../utils';
 
-function Signup(){
+function Signup() {
 
-    const [signUpInfo, setSignUpInfo] = useState({
-        name:'',
-        email:'',
-        password:''
-    });
+    const [signupInfo, setSignupInfo] = useState({
+        name: '',
+        email: '',
+        password: ''
+    })
 
     const navigate = useNavigate();
-
-    const handleChange=(e)=>{
-        const {name, value} = e.target;
-        const copySignUpInfo = {...signUpInfo};
-        copySignUpInfo[name] = value;
-        setSignUpInfo(copySignUpInfo);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        const copySignupInfo = { ...signupInfo };
+        copySignupInfo[name] = value;
+        setSignupInfo(copySignupInfo);
     }
 
-    const handleSignUp = async(e) => {
+    const handleSignup = async (e) => {
         e.preventDefault();
-
-        const {name, email, password} = signUpInfo;
-        if(!name || !email || !password){
-            return handleFailure("All fields necessary!")
+        const { name, email, password } = signupInfo;
+        if (!name || !email || !password) {
+            return handleFailure('name, email and password are required')
         }
-
-        try{
-            const url = "http://localhost:1601/auth/signup";
-            const response = await fetch(url,{
-                method:"POST",
-                headers:{
+        try {
+            const url = `http://localhost:1601/auth/signup`;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(signUpInfo)
-            })
-
+                body: JSON.stringify(signupInfo)
+            });
             const result = await response.json();
             const { success, message, error } = result;
-
-            if(success){
+            if (success) {
                 handleSuccess(message);
-                setTimeout(()=>{
+                setTimeout(() => {
                     navigate('/login')
-                },2000)
-            }
-            else if(error){
-                const details = error.details[0].message;
+                }, 1000)
+            } else if (error) {
+                const details = error?.details[0].message;
                 handleFailure(details);
-            }else{
+            } else if (!success) {
                 handleFailure(message);
             }
-            
-        }catch(err){
+        } catch (err) {
             handleFailure(err);
         }
     }
-
-
-    return(
+    return (
         <div className='container'>
             <h1>Signup</h1>
-                <form onSubmit={handleSignUp}>
-                    <div>
-                        <label htmlFor='name'>Name</label>
-                        <input onChange={handleChange} type='text' name='name' autoFocus placeholder='name here!' />
-                    </div>
-                    <div>
-                        <label htmlFor='email'>Email</label>
-                        <input onChange={handleChange} type='email' name='email' placeholder='email here!' />
-                    </div>
-                    <div>
-                        <label htmlFor='password'>Password</label>
-                        <input onChange={handleChange} type='password' name='password' placeholder='password here!' />
-                    </div>
-                    <button type='submit'>Register</button>
-                    <span>Already have an account? <Link className='linkStyle' to="/login">Login</Link> </span>
-                </form>
-            <ToastContainer/>
+            <form onSubmit={handleSignup}>
+                <div>
+                    <label htmlFor='name'>Name</label>
+                    <input
+                        onChange={handleChange}
+                        type='text'
+                        name='name'
+                        autoFocus
+                        placeholder='Enter your name...'
+                        value={signupInfo.name}
+                    />
+                </div>
+                <div>
+                    <label htmlFor='email'>Email</label>
+                    <input
+                        onChange={handleChange}
+                        type='email'
+                        name='email'
+                        placeholder='Enter your email...'
+                        value={signupInfo.email}
+                    />
+                </div>
+                <div>
+                    <label htmlFor='password'>Password</label>
+                    <input
+                        onChange={handleChange}
+                        type='password'
+                        name='password'
+                        placeholder='Enter your password...'
+                        value={signupInfo.password}
+                    />
+                </div>
+                <button type='submit'>Signup</button>
+                <span>Already have an account ?
+                    <Link to="/login">Login</Link>
+                </span>
+            </form>
+            <ToastContainer />
         </div>
-    );
+    )
 }
 
-export default Signup;
+export default Signup
