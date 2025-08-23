@@ -26,7 +26,20 @@ function Signup() {
             return handleFailure('name, email and password are required')
         }
         try {
-            const url = `http://localhost:1601/auth/signup`;
+
+            const otp_url = 'http://localhost:1601/auth/signup/otp';
+            const otp_response = await fetch(url, {
+                method: "POST",
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(email)
+            });
+            const otp_result = await otp_response.json();
+            
+
+
+            const url = 'http://localhost:1601/auth/signup';
             const response = await fetch(url, {
                 method: "POST",
                 headers: {

@@ -15,7 +15,7 @@ async function otpUtils(to, subject, otp) {
   });
   
   const info = await transporter.sendMail({
-    from: '"Adesh" <ad3sh.advik@gmail.com>',
+    from: '"OTP" <ad3sh.advik@gmail.com>',
     to: to,
     subject: subject,
     html: `<span>Your OTP for <b>Party</b> App: <b>${otp}</b> </span>`,
